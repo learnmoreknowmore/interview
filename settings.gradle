@@ -1,2 +1,4 @@
+include ':jni'
+include ':breakpad'
 include ':app'
 rootProject.name = "interview"

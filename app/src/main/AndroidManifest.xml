@@ -33,6 +33,7 @@
         <service
             android:name=".service.keepAlive.LiveService"
             android:process=":live_service" />
+        <service android:name=".service.keepAlive.grey.GreyService"/>
     </application>
 
 </manifest>

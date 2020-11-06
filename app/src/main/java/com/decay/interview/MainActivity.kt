@@ -1,5 +1,7 @@
 package com.decay.interview
 
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
@@ -10,29 +12,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.decay.interview.fragment.test.CustomFragmentFactory
 import com.decay.interview.fragment.test.MyFragment
-import com.decay.interview.service.keepAlive.*
+import com.decay.interview.remoteview.NotificationUtils
+import com.decay.interview.service.keepAlive.LiveService
 import com.decay.interview.service.keepAlive.ScreenStatusReceiver
+import com.decay.interview.service.keepAlive.grey.GreyService
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val customFragmentFactory = CustomFragmentFactory(dependency())
     override fun onCreate(savedInstanceState: Bundle?) {
         supportFragmentManager.fragmentFactory = customFragmentFactory
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-//        test()
-//        testPair()
-        //testKeepAlive()
-        startAliveService()
-        // testFragment()
-        //registerScreenStatusReceiver()
-        findViewById<Button>(R.id.btn_start).setOnClickListener {
-//            var intent = Intent(this, MyActivity::class.java)
-//           // startActivity(intent)
-            //registerScreenStatusReceiver()
-            //startService()
+       findViewById<Button>(R.id.btn_start).setOnClickListener {
+         // NotificationUtils(this).sendNotification(1, "测试", "莫得感情", R.mipmap.ic_launcher)
+           startService(Intent(baseContext,GreyService::class.java))
+       }
 
-        }
     }
 
     private fun registerScreenStatusReceiver() {
@@ -42,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         screenStatusIF.addAction(Intent.ACTION_SCREEN_OFF)
         registerReceiver(mScreenStatusReceiver, screenStatusIF)
     }
+
     // Method to start the service
     private fun startService() {
         startService(Intent(baseContext, LiveService::class.java))
@@ -53,7 +49,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startAliveService() {
-        LiveService.toLiveService(this)
+        startService(Intent(baseContext, GreyService::class.java))
+        //LiveService.toLiveService(this)
     }
 
 //    private fun testKeepAlive() {
@@ -104,5 +101,12 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         //stopService()
+    }
+
+
+
+    companion object {
+        val channelId: String = "channelId_test"
+        val channelName: String = "channelId_name"
     }
 }
