@@ -1,0 +1,36 @@
+ Kotlin Flow 为我们解决了以下问题:
+
+ 1：LiveData是一个生命周期感应组件，最好在view和viewModel层使用它,如果在repository和dataSource中使用会有几个问题
+    a: 不支持线程切换，其次不支持背压(就是在某段时间事件的发送速度大于接收速度),LiveData无法正常处理这些请求。
+    b: LiveData最大问题就是所有数据转换都在主线程完成
+ 2：RxJava支持线程切换和背压，但是操作符太多，学习门槛较高，不去了解背压原理很容易造成内存泄漏
+ 3：解决回调过多
+ flow优点：
+     Flow 支持线程切换、背压
+     Flow 入门的门槛很低，没有那么多傻傻分不清楚的操作符
+     简单的数据转换与操作符，如 map 等等
+     Flow 是对 Kotlin 协程的扩展，让我们可以像运行同步代码一样运行异步代码，使得代码更加简洁，提高了代码的可读性
+     易于做单元测试
+ 问题：
+ Kotlin Flow 是什么？以及如何使用？
+    官方介绍：
+    flow是非阻塞的，以挂起方式执行，只有遇到末端操作符才会粗发所有操作符执行，所有操作都会在相同代码块顺序执行。
+    发射出来都是顺序执行，只有在某一刻结束(遇到末端操作符 或者 出现异常)。
+    map , filter , take , zip 等等是中间操作符
+    collect , collectLatest , single , reduce , toList 等等末端操作符
+
+ 如何区分末端操作符还是中间操作符？
+     中间操作符是 Flow 的扩展函数，它们最后都是通过 emit 来发射数据
+     末端操作符是一个挂起函数
+     末端操作符无论是 collectLatest , single , reduce , toList 最后都是调用 collect
+
+ Kotlin Channel 是什么？以及如何使用？
+    Channel是非阻塞的，用于发送方（sendChannel）和接受方通信(receiveChannel)
+    channel实现了sendChannel和receiveChannel,所以既可以发送信息也可以接受信息。
+    channel和java中的blockingQueue类似，不同之处在于，blockingQueue是阻塞的，而channel是挂起的
+    发送方和接收方通过缓冲区进行同步。
+ Kotlin Channel 都有那几种类型？
+ BroadcastChannels 是什么？以及如何在项目中使用？
+ StateFlow 是什么？以及如何在项目中使用？
+ Kotlin 常用操作符 debounce 、filter 、flatMapLatest 、 distinctUntilChanged 解析？
+

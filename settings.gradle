@@ -1,3 +1,4 @@
+include ':jetpack'
 include ':jni'
 include ':breakpad'
 include ':app'
