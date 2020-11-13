@@ -1,0 +1,45 @@
+if (isRelease) { // 如果是发布版本时，各个模块都不能独立运行
+    apply plugin: 'com.android.library' // 正式环境  library不能独立运行
+} else {
+    apply plugin: 'com.android.application' // 测试环境 application独立运行
+}
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion ANDROID_ID.compileSdkVersion
+    buildToolsVersion ANDROID_ID.buildToolsVersion
+
+    defaultConfig {
+        if (!isRelease) {
+            applicationId appID.login
+        }
+        minSdkVersion ANDROID_ID.minSdkVersion
+        targetSdkVersion ANDROID_ID.targetSdkVersion
+        versionCode ANDROID_ID.versionCode
+        versionName ANDROID_ID.versionName
+
+        testInstrumentationRunner ANDROID_ID.testInstrumentationRunner
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    dependentID.each { k, v -> implementation v }
+}

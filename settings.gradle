@@ -1,3 +1,5 @@
+include ':user'
+include ':login'
 include ':jetpack'
 include ':jni'
 include ':breakpad'
